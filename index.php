@@ -6,51 +6,89 @@
 <link rel="stylesheet" href="bootstrap/css/bootstrap-responsive.css">
 </head>
 
- <body>
+<body>
  
- <h1>Laborationskod fh222dt</h1>
- <h2>Ej Inloggad</h2>
+<h1>Laborationskod fh222dt</h1>
+<!-- <h2>Ej Inloggad</h2>
 <form method="post" action="index.php" class="form-inline">
-<fieldset>
-<legend>Login - Skriv in användarnamn och lösenord</legend>
-<label for="UserName">Användarnamn</label>
-<input id="UserName" name="UserName" type="text" size="15">
-<label for="Password">Lösenord</label>
-<input id="Password" name="Password" type="password" size="15">
+	<fieldset>
+		<legend>Login - Skriv in användarnamn och lösenord</legend>
 
-<label for="KeepLogin" class="checkbox"> 
-	<input id="KeepLogin" type="checkbox"> Håll mig inloggad</label>
+		<label for="UserName">Användarnamn</label>
+		<input id="UserName" name="UserName" type="text" size="15">
 
-<input type="submit" name="submit" value="Logga in" class="btn">
-</fieldset>
-</form>
+		<label for="Password">Lösenord</label>
+		<input id="Password" name="Password" type="password" size="15">
+
+		<label for="KeepLogin" class="checkbox"> 
+		<input id="KeepLogin" type="checkbox"> Håll mig inloggad</label>
+
+		<input type="submit" name="submit" value="Logga in" class="btn">
+	</fieldset>
+</form> -->
 
 
 
 <?php
+
+$formHeader ="<h2>Ej Inloggad</h2>";
+$helpText ="";
+$display_form =true;
+
 /*endast dessa variabler går att logga in med*/
 $username = "Admin";
 $password = "Password";
 
 	
 /*testa om formuläret är skickat*/
-if (isset($_POST['submit'])) {
+if (isset($_POST["submit"])) {
 
-	echo "HEJA!";
-
+	
 	if ($_POST["UserName"] == $username && $_POST["Password"] == $password) {
-	echo "<br/>jjjjjjjjjjjjjjjjj";
+
+		$formHeader ="<h2>Inloggad</h2>";
+
+		echo "<br/>Inloggningen lyckades </br> <a>Logga ut</a>" ;
 	}
 
 	else {
-		echo "<br/>Fel användaruppgifter!";
+		$helpText= "<p>Felaktigt användarnamn och/eller lösenord</p><br/>";
 	}
 }
+
+echo $formHeader;
+
+if ($display_form == true) {
+
+	
+	
+	?>
+<form method="post" action="index.php" class="form-inline">
+	<fieldset>
+		<legend>Login - Skriv in användarnamn och lösenord</legend>
+
+		<?php echo $helpText; ?>
+
+		<label for="UserName">Användarnamn</label>
+		<input id="UserName" name="UserName" type="text" size="15">
+
+		<label for="Password">Lösenord</label>
+		<input id="Password" name="Password" type="password" size="15">
+
+		<label for="KeepLogin" class="checkbox"> 
+		<input id="KeepLogin" type="checkbox"> Håll mig inloggad</label>
+
+		<input type="submit" name="submit" value="Logga in" class="btn">
+	</fieldset>
+</form> <?php
+}
+
+
 
 
 /*Visa datum och tid snyggt på svenska*/
 setlocale (LC_TIME, "Swedish"); 
- echo strftime("%A" . ", den " . "%#d %B %Y" . ". Klockan är [" . "%X" . "]"); //formatet %#d är linux %e
+ echo strftime("<p>%A" . ", den " . "%#d %B %Y" . ". Klockan är [" . "%X" . "]</p>"); //formatet %#d är linux %e
  ?>
  </body>
  </html>
