@@ -33,7 +33,7 @@
 
 $formHeader ="<h2>Ej Inloggad</h2>";
 $helpText ="";
-$display_form =true;
+$displayForm =true;
 
 /*endast dessa variabler går att logga in med*/
 $username = "Admin";
@@ -43,12 +43,16 @@ $password = "Password";
 /*testa om formuläret är skickat*/
 if (isset($_POST["submit"])) {
 
+	$loginName = $_POST["UserName"];
+
 	
 	if ($_POST["UserName"] == $username && $_POST["Password"] == $password) {
 
-		$formHeader ="<h2>Inloggad</h2>";
+		$formHeader ="<h2> $loginName är inloggad</h2>";
 
 		echo "<br/>Inloggningen lyckades </br> <a>Logga ut</a>" ;
+
+		$displayForm = false;
 	}
 
 	else {
@@ -58,9 +62,7 @@ if (isset($_POST["submit"])) {
 
 echo $formHeader;
 
-if ($display_form == true) {
-
-	
+if ($displayForm == true) {	
 	
 	?>
 <form method="post" action="index.php" class="form-inline">
