@@ -91,7 +91,8 @@ if ($displayForm == true) {
 		<?php echo $helpText; ?>
 
 		<label for="UserName">Användarnamn</label>
-		<input id="UserName" name="UserName" type="text" size="15">
+		<input id="UserName" name="UserName" type="text" size="15" 
+		value="<?php echo isset($_POST['UserName']) ? $_POST['UserName'] : '' ?>">		<!--value anv för att behålla inmatad text -->
 
 		<label for="Password">Lösenord</label>
 		<input id="Password" name="Password" type="password" size="15">
