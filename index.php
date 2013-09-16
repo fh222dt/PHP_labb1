@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <?php 
-session_start();
+session_start();	//starta sessionen
 ?>
 <html>
 <head>
@@ -12,59 +12,48 @@ session_start();
 <body>
  
 <h1>Laborationskod fh222dt</h1>
-<!-- <h2>Ej Inloggad</h2>
-<form method="post" action="index.php" class="form-inline">
-	<fieldset>
-		<legend>Login - Skriv in användarnamn och lösenord</legend>
-
-		<label for="UserName">Användarnamn</label>
-		<input id="UserName" name="UserName" type="text" size="15">
-
-		<label for="Password">Lösenord</label>
-		<input id="Password" name="Password" type="password" size="15">
-
-		<label for="KeepLogin" class="checkbox"> 
-		<input id="KeepLogin" type="checkbox"> Håll mig inloggad</label>
-
-		<input type="submit" name="submit" value="Logga in" class="btn">
-	</fieldset>
-</form> -->
-
-
 
 <?php
-
+//variabler
 $formHeader ="<h2>Ej Inloggad</h2>";
 $helpText ="";
 $displayForm =true;
-
-/*endast dessa variabler går att logga in med*/
+//endast dessa variabler går att logga in med
 $username = "Admin";
 $password = "Password";
 
 
+//logga ut
+if (isset($_GET["logout"])) {		//kolla om det finns i urlen
+
+	session_destroy();
+	$helpText= "<p>Du har nu loggat ut</p><br/>";
+
+}
 	
-/*testa om formuläret är skickat*/
+//testa om formuläret är skickat
 if (isset($_POST["submit"])) {
 
 	$inputName = $_POST["UserName"];
-	$inputPsw = $_POST["Password"];
-
-	
+	$inputPsw = $_POST["Password"];	
 		
-	if ($_POST["UserName"] == $username && $_POST["Password"] == $password) {
+	if ($inputName == $username && $inputPsw == $password) {
+		//vid en lyckad inloggning
+		$_SESSION["login"] = true;
 
-		$formHeader ="<h2> $inputName är inloggad</h2>";
+		/*$formHeader = "<h2> $inputName är inloggad</h2>";
 
 		?>
 		<p>Inloggningen lyckades </br> <a href="?logout=true">Logga ut</a></p>
 		<?php
 
-		$displayForm = false;
+		$displayForm = false;*/
+
+		header("Location: $_SERVER[PHP_SELF]");
 	}
 
 	else {
-
+		//felhantering av inmatad data från användaren
 		if(empty($inputName) ) {
 		$helpText= "<p>Användarnamn saknas</p><br/>";
 		}
@@ -77,6 +66,17 @@ if (isset($_POST["submit"])) {
 			$helpText= "<p>Felaktigt användarnamn och/eller lösenord</p><br/>";
 		}
 	}
+}
+
+if (isset($_SESSION["login"])) {
+
+	$formHeader = "<h2> Admin är inloggad</h2>";		//ändra namn till en variabel!!!!
+	?>
+		<p>Inloggningen lyckades </br> <a href="?logout=true">Logga ut</a></p>
+		<?php
+
+		$displayForm = false;
+
 }
 
 echo $formHeader;
@@ -104,16 +104,12 @@ if ($displayForm == true) {
 </form> <?php
 }
 
-if (isset($_GET["logout"])) {		//kolla om det finns i urlen
-
-	session_destroy();
-
-}
 
 
 
 
-/*Visa datum och tid snyggt på svenska*/
+
+//Visa datum och tid snyggt på svenska
 setlocale (LC_TIME, "Swedish"); 
  echo strftime("<p>%A" . ", den " . "%#d %B %Y" . ". Klockan är [" . "%X" . "]</p>"); //formatet %#d är linux %e
  ?>
