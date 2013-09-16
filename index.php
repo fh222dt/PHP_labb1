@@ -42,16 +42,19 @@ $displayForm =true;
 $username = "Admin";
 $password = "Password";
 
+
 	
 /*testa om formuläret är skickat*/
 if (isset($_POST["submit"])) {
 
-	$loginName = $_POST["UserName"];
+	$inputName = $_POST["UserName"];
+	$inputPsw = $_POST["Password"];
 
 	
+		
 	if ($_POST["UserName"] == $username && $_POST["Password"] == $password) {
 
-		$formHeader ="<h2> $loginName är inloggad</h2>";
+		$formHeader ="<h2> $inputName är inloggad</h2>";
 
 		?>
 		<p>Inloggningen lyckades </br> <a href="?logout=true">Logga ut</a></p>
@@ -61,7 +64,18 @@ if (isset($_POST["submit"])) {
 	}
 
 	else {
-		$helpText= "<p>Felaktigt användarnamn och/eller lösenord</p><br/>";
+
+		if(empty($inputName) ) {
+		$helpText= "<p>Användarnamn saknas</p><br/>";
+		}
+
+		else if(empty($inputPsw) ) {
+			$helpText= "<p>Lösenord saknas</p><br/>";
+		}
+
+		else {
+			$helpText= "<p>Felaktigt användarnamn och/eller lösenord</p><br/>";
+		}
 	}
 }
 
