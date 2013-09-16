@@ -1,4 +1,7 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
+<?php 
+session_start();
+?>
 <html>
 <head>
 <meta charset="utf-8">
@@ -50,7 +53,9 @@ if (isset($_POST["submit"])) {
 
 		$formHeader ="<h2> $loginName är inloggad</h2>";
 
-		echo "<br/>Inloggningen lyckades </br> <a>Logga ut</a>" ;
+		?>
+		<p>Inloggningen lyckades </br> <a href="?logout=true">Logga ut</a></p>
+		<?php
 
 		$displayForm = false;
 	}
@@ -83,6 +88,12 @@ if ($displayForm == true) {
 		<input type="submit" name="submit" value="Logga in" class="btn">
 	</fieldset>
 </form> <?php
+}
+
+if (isset($_GET["logout"])) {		//kolla om det finns i urlen
+
+	session_destroy();
+
 }
 
 
