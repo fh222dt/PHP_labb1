@@ -5,6 +5,7 @@ session_start();	//starta sessionen
 <html>
 <head>
 <meta charset="utf-8">
+<title>Laboration 1</title>
 <link rel="stylesheet" href="bootstrap/css/bootstrap.css">
 <link rel="stylesheet" href="bootstrap/css/bootstrap-responsive.css">
 </head>
@@ -22,16 +23,12 @@ $displayForm =true;
 $username = "Admin";
 $password = "Password";
 
-echo $formHeader;
+//echo $formHeader;
 
 
 //logga ut
-if (isset($_GET["logout"])) {		//kolla om det finns i urlen
+if (isset($_GET["logout"])) {		//kolla om det finns i urlen	
 	
-	
-	//if sidan är besökt förut
-	//$helpText="";
-
 	if(!isset($_SESSION["login"])) {
 			$helpText="";
 	}
@@ -48,9 +45,9 @@ if (isset($_POST["submit"])) {
 
 	$inputName = $_POST["UserName"];
 	$inputPsw = $_POST["Password"];	
-		
-	if ($inputName == $username && $inputPsw == $password) {
-		//vid en lyckad inloggning
+	
+	//vid en lyckad inloggning	
+	if ($inputName == $username && $inputPsw == $password) {		
 		//starta en session 
 		$_SESSION["login"] = 1;
 
@@ -58,8 +55,8 @@ if (isset($_POST["submit"])) {
 		header("Location: $_SERVER[PHP_SELF]");
 	}
 
-	else {
-		//felhantering av inmatad data från användaren
+	//felhantering av inmatad data från användaren
+	else {		
 		if(empty($inputName) ) {
 		$helpText= "<p>Användarnamn saknas</p><br/>";
 		}
@@ -77,10 +74,11 @@ if (isset($_POST["submit"])) {
 //när man har loggat in visas detta
 if (isset($_SESSION["login"])) {
 
-	$formHeader = "<h2> Admin är inloggad</h2>";		//ändra namn till en variabel!!!!
+	?>
+	<h2> Admin är inloggad</h2>		
+	<?php 							//ändra namn till en variabel!!!!
 	
-	
-			$_SESSION["login"] = $_SESSION["login"]+1;
+	$_SESSION["login"] = $_SESSION["login"]+1;
 
 	if ($_SESSION["login"] == 3) {				//varför är den 3?
 		?>
@@ -92,16 +90,18 @@ if (isset($_SESSION["login"])) {
 		?>
 		<a href="?logout=true">Logga ut</a>
 		<?php
-		}
+	}
 
 	$displayForm = false;
 
 }
 
-//echo $formHeader;
 
+
+//visa formuläret
 if ($displayForm == true) {	
 	
+	echo $formHeader;
 	?>
 	<form method="post" action="index.php" class="form-inline">
 		<fieldset>
@@ -125,8 +125,9 @@ if ($displayForm == true) {
 }
 
 //Visa datum och tid snyggt på svenska
-setlocale (LC_TIME, "Swedish"); 
- echo strftime("<p>%A" . ", den " . "%#d %B %Y" . ". Klockan är [" . "%X" . "]</p>"); //formatet %#d är linux %e
- ?>
- </body>
- </html>
+setlocale (LC_TIME, "Swedish");
+echo utf8_encode(strftime("<p>%A")); 
+echo strftime(", den " . "%#d %B %Y" . ". Klockan är [" . "%X" . "]</p>"); //formatet %#d är linux %e	anv %T ist f %X på servern
+?>
+</body>
+</html>
