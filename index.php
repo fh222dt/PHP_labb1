@@ -22,13 +22,25 @@ $displayForm =true;
 $username = "Admin";
 $password = "Password";
 
+echo $formHeader;
+
 
 //logga ut
 if (isset($_GET["logout"])) {		//kolla om det finns i urlen
+	
+	
+	//if sidan är besökt förut
+	//$helpText="";
 
+	if(!isset($_SESSION["login"])) {
+			$helpText="";
+	}
+
+	else {
+		$helpText= "<p>Du har nu loggat ut</p><br/>";
+	unset($_SESSION["login"]);
 	session_destroy();
-	$helpText= "<p>Du har nu loggat ut</p><br/>";
-
+	}
 }
 	
 //testa om formuläret är skickat
@@ -39,16 +51,10 @@ if (isset($_POST["submit"])) {
 		
 	if ($inputName == $username && $inputPsw == $password) {
 		//vid en lyckad inloggning
-		$_SESSION["login"] = true;
+		//starta en session 
+		$_SESSION["login"] = 1;
 
-		/*$formHeader = "<h2> $inputName är inloggad</h2>";
-
-		?>
-		<p>Inloggningen lyckades </br> <a href="?logout=true">Logga ut</a></p>
-		<?php
-
-		$displayForm = false;*/
-
+		//ladda om sidan så scriptet körs igen
 		header("Location: $_SERVER[PHP_SELF]");
 	}
 
@@ -68,47 +74,55 @@ if (isset($_POST["submit"])) {
 	}
 }
 
+//när man har loggat in visas detta
 if (isset($_SESSION["login"])) {
 
 	$formHeader = "<h2> Admin är inloggad</h2>";		//ändra namn till en variabel!!!!
-	?>
+	
+	
+			$_SESSION["login"] = $_SESSION["login"]+1;
+
+	if ($_SESSION["login"] == 3) {				//varför är den 3?
+		?>
 		<p>Inloggningen lyckades </br> <a href="?logout=true">Logga ut</a></p>
 		<?php
+	}
 
-		$displayForm = false;
+	else {
+		?>
+		<a href="?logout=true">Logga ut</a>
+		<?php
+		}
+
+	$displayForm = false;
 
 }
 
-echo $formHeader;
+//echo $formHeader;
 
 if ($displayForm == true) {	
 	
 	?>
-<form method="post" action="index.php" class="form-inline">
-	<fieldset>
-		<legend>Login - Skriv in användarnamn och lösenord</legend>
+	<form method="post" action="index.php" class="form-inline">
+		<fieldset>
+			<legend>Login - Skriv in användarnamn och lösenord</legend>
 
-		<?php echo $helpText; ?>
+			<?php echo $helpText; ?>
 
-		<label for="UserName">Användarnamn</label>
-		<input id="UserName" name="UserName" type="text" size="15" 
-		value="<?php echo isset($_POST['UserName']) ? $_POST['UserName'] : '' ?>">		<!--value anv för att behålla inmatad text -->
+			<label for="UserName">Användarnamn</label>
+			<input id="UserName" name="UserName" type="text" size="15" 
+			value="<?php echo isset($_POST['UserName']) ? $_POST['UserName'] : '' ?>">		<!--value anv för att behålla inmatad text -->
 
-		<label for="Password">Lösenord</label>
-		<input id="Password" name="Password" type="password" size="15">
+			<label for="Password">Lösenord</label>
+			<input id="Password" name="Password" type="password" size="15">
 
-		<label for="KeepLogin" class="checkbox"> 
-		<input id="KeepLogin" type="checkbox"> Håll mig inloggad</label>
+			<label for="KeepLogin" class="checkbox"> 
+			<input id="KeepLogin" type="checkbox"> Håll mig inloggad</label>
 
-		<input type="submit" name="submit" value="Logga in" class="btn">
-	</fieldset>
-</form> <?php
+			<input type="submit" name="submit" value="Logga in" class="btn">
+		</fieldset>
+	</form> <?php
 }
-
-
-
-
-
 
 //Visa datum och tid snyggt på svenska
 setlocale (LC_TIME, "Swedish"); 
